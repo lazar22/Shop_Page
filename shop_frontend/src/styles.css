@@ -1,11 +1,27 @@
 :root {
-  --bg-base-color-dm: rgba(6, 22, 77);
-  --txt-base-color-dm: rgb(174, 174, 179);
-
-  --bg-item-color-dm: rgba(145, 162, 220);
-  --bg-item-shadow-color-dm: rgb(148, 145, 220);
+  /*--bg-base-color: #060904;*/
+  /*--txt-base-color: #e6eee2;*/
+  /*--primary-color: #b1d89b;*/
+  /*--secondary-color: #427624;*/
+  /*--accent-color: #427624;*/
 
   --title-size: 6vw;
+}
+
+.dark_mode {
+  --bg-base-color: #060904;
+  --txt-base-color: #e6eee2;
+  --primary-color: #b1d89b;
+  --secondary-color: #427624;
+  --accent-color: #427624;
+}
+
+.light_mode {
+  --bg-base-color: #151d11;
+  --txt-base-color: #f8faf5;
+  --primary-color: #3a6227;
+  --secondary-color: #a8db8a;
+  --accent-color: #5eb62b;
 }
 
 * {
@@ -14,7 +30,7 @@
 }
 
 body {
-  background-color: var(--bg-base-color-dm);
+  background-color: var(--bg-base-color);
 
   overflow-x: hidden;
   overflow-y: auto;

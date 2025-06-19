@@ -1,0 +1,47 @@
+.nav_bar {
+  position: fixed;
+  width: 100%;
+  height: 7vh;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  text-align: center;
+  background-color: var(--primary-color);
+  color: var(--txt-base-color);
+  font-size: 2vw;
+}
+
+.nav_bar span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.icons {
+  width: fit-content;
+  height: 100%;
+  padding: .5vw;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons > div {
+  width: 1.5vw;
+  height: 1.5vw;
+
+  transition: all 300ms ease-in-out;
+}
+
+.icons > div:hover {
+  cursor: pointer;
+  width: 1.6vw;
+}
+
+.icons .mode {
+  height: 100%;
+  background-image: url("/icons/moon.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}

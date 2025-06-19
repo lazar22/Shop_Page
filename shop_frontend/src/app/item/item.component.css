@@ -1,23 +1,21 @@
 .item {
-  background-color: var(--bg-item-color-dm);
-  color: black;
-
+  background-color: var(--secondary-color);
+  color: var(--txt-base-color);
+  
   width: 15vw;
-  height: 18vw;
+  height: 25vw;
 
   border: transparent solid .1vw;
   border-radius: .5vw;
 
-  box-shadow: var(--bg-item-shadow-color-dm) .3vw .5vw;
-
   display: block;
 
-  font-size: 1.3vw;
+  font-size: 1vw;
 }
 
 img {
   width: 100%;
-  height: 60%;
+  height: 75%;
   border-radius: .5vw;
 }
 
@@ -28,6 +26,6 @@ span {
 }
 
 .tittle {
-  font-size: 1.8vw;
+  font-size: 1.5vw;
   margin: .5vw;
 }

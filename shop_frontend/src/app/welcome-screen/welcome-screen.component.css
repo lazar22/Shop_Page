@@ -1,4 +1,4 @@
-.container{
+.container {
   width: 100vw;
   height: 100vh;
 
@@ -7,9 +7,9 @@
   text-align: center;
 
   font-size: var(--title-size);
-  color: var(--txt-base-color-dm);
+  color: var(--txt-base-color);
 }
 
-span{
+span {
   display: block;
 }

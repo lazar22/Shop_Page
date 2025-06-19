@@ -1,16 +1,19 @@
-:root{
+:root {
   --bg-base-color-dm: rgba(6, 22, 77);
   --txt-base-color-dm: rgb(174, 174, 179);
+
+  --bg-item-color-dm: rgba(145, 162, 220);
+  --bg-item-shadow-color-dm: rgb(148, 145, 220);
 
   --title-size: 6vw;
 }
 
-*{
+* {
   padding: 0;
   margin: 0;
 }
 
-body{
+body {
   background-color: var(--bg-base-color-dm);
 
   overflow-x: hidden;

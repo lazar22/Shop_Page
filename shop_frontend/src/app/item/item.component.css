@@ -1,0 +1,33 @@
+.item {
+  background-color: var(--bg-item-color-dm);
+  color: black;
+
+  width: 15vw;
+  height: 18vw;
+
+  border: transparent solid .1vw;
+  border-radius: .5vw;
+
+  box-shadow: var(--bg-item-shadow-color-dm) .3vw .5vw;
+
+  display: block;
+
+  font-size: 1.3vw;
+}
+
+img {
+  width: 100%;
+  height: 60%;
+  border-radius: .5vw;
+}
+
+span {
+  display: block;
+  overflow: hidden;
+  text-align: center;
+}
+
+.tittle {
+  font-size: 1.8vw;
+  margin: .5vw;
+}

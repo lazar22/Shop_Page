@@ -1,0 +1,3 @@
+C:/Users/Lazar/OneDrive/Desktop/Shop_Page/shop_backend/cmake-build-debug/CMakeFiles/shop.dir
+C:/Users/Lazar/OneDrive/Desktop/Shop_Page/shop_backend/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Lazar/OneDrive/Desktop/Shop_Page/shop_backend/cmake-build-debug/CMakeFiles/rebuild_cache.dir

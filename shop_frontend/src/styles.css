@@ -1,10 +1,4 @@
 :root {
-  /*--bg-base-color: #060904;*/
-  /*--txt-base-color: #e6eee2;*/
-  /*--primary-color: #b1d89b;*/
-  /*--secondary-color: #427624;*/
-  /*--accent-color: #427624;*/
-
   --title-size: 6vw;
 }
 
@@ -17,9 +11,9 @@
 }
 
 .light_mode {
-  --bg-base-color: #151d11;
-  --txt-base-color: #f8faf5;
-  --primary-color: #3a6227;
+  --bg-base-color: #f8faf5;
+  --txt-base-color: #151d11;
+  --primary-color: #366227;
   --secondary-color: #a8db8a;
   --accent-color: #5eb62b;
 }
@@ -34,4 +28,6 @@ body {
 
   overflow-x: hidden;
   overflow-y: auto;
+
+  transition: all 400ms ease-in-out;
 }

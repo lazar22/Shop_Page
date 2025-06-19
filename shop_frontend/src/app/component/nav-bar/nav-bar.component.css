@@ -9,6 +9,10 @@
   background-color: var(--primary-color);
   color: var(--txt-base-color);
   font-size: 2vw;
+  border-radius: 0 0 .6vw .6vw;
+  box-shadow: var(--secondary-color) .2vw .3vw;
+  transition: all 400ms ease-in-out;
+  z-index: 99;
 }
 
 .nav_bar span {

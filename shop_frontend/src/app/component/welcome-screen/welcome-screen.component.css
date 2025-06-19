@@ -13,3 +13,9 @@
 span {
   display: block;
 }
+
+.title {
+  -webkit-text-stroke-width: .1vw;
+  -webkit-text-stroke-color: var(--accent-color);
+  color: transparent;
+}

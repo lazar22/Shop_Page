@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {WelcomeScreenComponent} from "../../welcome-screen/welcome-screen.component";
-import {ItemComponent} from "../../item/item.component";
 import {NgOptimizedImage} from "@angular/common";
+import {WelcomeScreenComponent} from "../../component/welcome-screen/welcome-screen.component";
+import {TrendingComponent} from "../../component/trending/trending.component";
+import {ItemComponent} from "../../component/item/item.component";
 
 @Component({
   selector: 'app-home-page',
@@ -9,7 +10,8 @@ import {NgOptimizedImage} from "@angular/common";
   imports: [
     WelcomeScreenComponent,
     ItemComponent,
-    NgOptimizedImage
+    NgOptimizedImage,
+    TrendingComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-welcome-screen',
@@ -8,6 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './welcome-screen.component.css'
 })
 export class WelcomeScreenComponent {
-
-    protected readonly name = 'My Shop';
+  @Input() title!: string;
 }

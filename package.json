@@ -1,0 +1,11 @@
+{
+  "name": "shop_page",
+  "version": "1.0.0",
+  "description": "Simple Shop Page using Angular as Front end and C++ as a Back End",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -2,5 +2,10 @@
   <span> My Shop </span>
   <div class="icons">
     <div class="mode" id="toggle_dark" (click)="mode_change()"></div>
+    <div class="cart" routerLink="cart">
+      <div class="amount" [class.hide]="amount_of_items === 0">
+        <span class="num">{{ amount_of_items }}</span>
+      </div>
+    </div>
   </div>
 </div>

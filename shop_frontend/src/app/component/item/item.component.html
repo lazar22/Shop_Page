@@ -8,10 +8,10 @@
   <div class="text">
     <span class="tittle"> {{ title }}</span>
     <span class="description"> {{ description }}</span>
-    <span class="price"> Buy for: {{ price }}</span>
+    <span class="price"> {{ price }} kr </span>
   </div>
 
-  <div class="buy">
+  <div class="buy" (click)="add_item()">
     <div class="buy_icon"></div>
   </div>
 </div>

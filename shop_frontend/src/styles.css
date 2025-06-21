@@ -7,7 +7,7 @@
   --txt-base-color: #e6eee2;
   --primary-color: #b1d89b;
   --secondary-color: #427624;
-  --accent-color: #427624;
+  --accent-color: #7cd449;
 }
 
 .light_mode {
@@ -21,6 +21,24 @@
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: auto;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base-color);
+  transition: all 400ms ease-in-out;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 1vw;
+  border-radius: 1vw;
+  background: var(--txt-base-color);
+  -webkit-box-shadow: var(--accent-color);
+  transition: all 400ms ease-in-out;
 }
 
 body {

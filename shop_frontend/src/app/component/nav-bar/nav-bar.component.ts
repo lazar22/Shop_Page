@@ -1,20 +1,41 @@
 import {DOCUMENT} from '@angular/common';
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {RouterLink} from "@angular/router";
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {CartService} from '../../services/cart.service';
+
 
 export type Theme = 'light_mode' | 'dark_mode';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink,
+    HttpClientModule  // <-- Add this here
+  ],
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css'
+  styleUrls: ['./nav-bar.component.css']  // fix typo here: styleUrls (plural)
 })
-
 export class NavBarComponent {
   theme: Theme = 'dark_mode';
+  amount_of_items: number = 0;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private cartService: CartService,
+    private http: HttpClient
+  ) {
+  }
+
+  ngOnInit() {
+    // Subscribe to changes in item count
+    this.cartService.itemCount$.subscribe(count => {
+      this.amount_of_items = count;
+    });
+
+    // Initial fetch from backend
+    this.cartService.refreshItemCount(this.http);
   }
 
   mode_change() {

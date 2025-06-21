@@ -1,11 +1,15 @@
 import {Component, Input} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {NgOptimizedImage} from "@angular/common";
+import {CartService} from '../../services/cart.service';  // adjust import
 
 @Component({
   selector: 'app-item',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgOptimizedImage,
+    HttpClientModule
   ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.css'
@@ -13,6 +17,27 @@ import {NgOptimizedImage} from "@angular/common";
 export class ItemComponent {
   @Input() title!: string;
   @Input() description!: string;
+  @Input() id!: number;
   @Input() price!: number;
   @Input() picture!: string;
+
+  constructor(
+    private cartService: CartService,
+    private http: HttpClient
+  ) {
+  }
+
+  add_item(): void {
+    this.http.post('http://localhost:4000/cart/add', {
+      item_id: this.id,
+      price: this.price,
+      quantity: 1
+    }, {responseType: 'json'})
+      .subscribe({
+        next: () => console.log('Item added successfully'),
+        error: (err) => console.error('Add item failed', err)
+      });
+
+    this.cartService.refreshItemCount(this.http);
+  }
 }

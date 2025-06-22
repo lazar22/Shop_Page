@@ -1,29 +1,10 @@
 <div class="trending_container">
-  <app-item title="T-Shirt"
-            description="Black T-shirt"
-            [id]="1"
-            [price]="200"
-            picture="/item_img/black_tshirt_temp.jpg">
-  </app-item>
-
-  <app-item title="T-Shirt"
-            description="Black T-shirt"
-            [id]="2"
-            [price]="200"
-            picture="/item_img/black_tshirt_temp.jpg">
-  </app-item>
-
-  <app-item title="T-Shirt"
-            description="Black T-shirt"
-            [id]="3"
-            [price]="200"
-            picture="/item_img/black_tshirt_temp.jpg">
-  </app-item>
-
-  <app-item title="T-Shirt"
-            description="Black T-shirt"
-            [id]="4"
-            [price]="200"
-            picture="/item_img/black_tshirt_temp.jpg">
-  </app-item>
+  <app-item
+    *ngFor="let item of items"
+    [id]="item.id"
+    [title]="item.title"
+    [description]="item.description"
+    [price]="item.price"
+    [picture]="item.picture"
+  ></app-item>
 </div>

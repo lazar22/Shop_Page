@@ -1,0 +1,10 @@
+# ninja log v6
+4	232	7722360992064476	build.ninja	a7a55b8ed44056f
+9304	20498	7722351215450966	shop.exe	306bee35d35baae4
+12	9304	7722351122532011	CMakeFiles/shop.dir/src/main.cpp.obj	41aeb0479cb16eb3
+8	1336	7722325571035171	CMakeFiles/shop.dir/src/win_accept_ex_loader.cpp.obj	4649020848aed570
+11	1549	7722361001480505	CMakeFiles/shop.dir/src/win_accept_ex_loader.cpp.obj	f7d0237d93c28180
+9	9434	7722361411064513	CMakeFiles/shop.dir/src/main.cpp.obj	ddbc65be7ddceefb
+9434	21301	7722361505310851	shop.exe	306bee35d35baae4
+7	9221	7722362221741383	CMakeFiles/shop.dir/src/main.cpp.obj	ddbc65be7ddceefb
+9222	20924	7722362313890525	shop.exe	306bee35d35baae4

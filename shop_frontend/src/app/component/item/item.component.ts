@@ -12,8 +12,9 @@ import {CartService} from '../../services/cart.service';  // adjust import
     HttpClientModule
   ],
   templateUrl: './item.component.html',
-  styleUrl: './item.component.css'
+  styleUrl: './item.component.css',
 })
+
 export class ItemComponent {
   @Input() title!: string;
   @Input() description!: string;

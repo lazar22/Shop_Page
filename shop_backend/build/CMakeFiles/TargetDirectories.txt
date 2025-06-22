@@ -1,0 +1,3 @@
+C:/Users/Lazar/OneDrive/Desktop/Shop_Page/shop_backend/build/CMakeFiles/shop.dir
+C:/Users/Lazar/OneDrive/Desktop/Shop_Page/shop_backend/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Lazar/OneDrive/Desktop/Shop_Page/shop_backend/build/CMakeFiles/ZERO_CHECK.dir

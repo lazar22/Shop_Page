@@ -1,1 +1,16 @@
-<p>cart-item works!</p>
+<div class="cart_item">
+  <img src="{{picture}}" alt="Item Icon">
+  <div class="information">
+    <span class="item_name">{{ title }}</span>
+    <span class="description">{{ description }}</span>
+  </div>
+  <div class="additional">
+    <select name="amount" [(ngModel)]="amount">
+      <option *ngFor="let opt of amountOptions" [value]="opt">{{ opt }}</option>
+    </select>
+
+    <div class="remove_item">
+      <span>Remove</span>
+    </div>
+  </div>
+</div>

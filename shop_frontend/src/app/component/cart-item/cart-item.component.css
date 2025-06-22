@@ -1,0 +1,101 @@
+.cart_item {
+  width: 60vw;
+  height: 25vh;
+
+  display: flex;
+  position: relative;
+
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+
+  background: var(--primary-color);
+  color: var(--txt-base-color);
+
+  padding: 2vw;
+
+  border: none;
+  border-radius: 1vw;
+  box-shadow: .2vw .2vw .2vw var(--secondary-color);
+}
+
+img {
+  width: 15vw;
+  height: 20vh;
+}
+
+.information {
+  width: 80%;
+  height: 100%;
+
+  padding-left: 2vw;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+
+  color: var(--txt-base-color);
+}
+
+.item_name {
+  font-size: 1.5vw;
+  font-weight: bold;
+
+  margin-bottom: 0.5vw;
+}
+
+.description {
+  font-size: 1vw;
+}
+
+.additional {
+  width: 15%;
+  height: 100%;
+
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  gap: 1vw;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.additional > select {
+  width: 3vw;
+  height: 4vh;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  background: var(--secondary-color);
+  color: var(--txt-base-color);
+}
+
+.remove_item {
+  width: 5vw;
+  height: 4vh;
+
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  padding: .2vw;
+
+  background: var(--secondary-color);
+  color: var(--txt-base-color);
+
+  border: none;
+  border-radius: .3vw;
+
+  box-shadow: .1vw .1vw .1vw var(--accent-color);
+  transition: all 400ms ease-in-out;
+}
+
+.remove_item:hover {
+  transform: scale(1.1);
+}

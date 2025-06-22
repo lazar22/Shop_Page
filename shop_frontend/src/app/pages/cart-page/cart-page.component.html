@@ -1,0 +1,10 @@
+<div class="holder">
+  <app-cart-item
+    *ngFor="let cartItem of cartItems"
+    [title]="cartItem.item.title"
+    [description]="cartItem.item.description"
+    [picture]="cartItem.item.picture"
+    [amount]="cartItem.amount"
+    [stock]="cartItem.item.stock"
+  ></app-cart-item>
+</div>

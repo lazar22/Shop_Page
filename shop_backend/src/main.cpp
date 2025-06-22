@@ -38,11 +38,6 @@ int main()
     crow::App<CORS> app;
     Cart cart;
 
-    CROW_ROUTE(app, "/hello")([]
-    {
-        return "Hello, world!";
-    });
-
     CROW_ROUTE(app, "/cart/add").methods(crow::HTTPMethod::Post)([&cart](const crow::request& req)
     {
         auto body = crow::json::load(req.body);
@@ -76,6 +71,26 @@ int main()
     {
         crow::json::wvalue response_body;
         response_body["count"] = cart.get_item_count();
+
+        crow::response res{200};
+        res.set_header("Content-Type", "application/json");
+        res.write(response_body.dump());
+
+        return res;
+    });
+
+    CROW_ROUTE(app, "/cart/get_items").methods("GET"_method)([&cart]()
+    {
+        crow::json::wvalue response_body = crow::json::wvalue::list();
+
+        auto items = cart.get_items();
+        int index = 0;
+        for (const auto& [id, qty] : items)
+        {
+            response_body[index]["id"] = id;
+            response_body[index]["amount"] = qty;
+            ++index;
+        }
 
         crow::response res{200};
         res.set_header("Content-Type", "application/json");

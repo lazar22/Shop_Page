@@ -11,8 +11,15 @@
   font-size: 2vw;
   border-radius: 0 0 .6vw .6vw;
   box-shadow: var(--secondary-color) .2vw .3vw;
+  opacity: 1;
+  transform: translateY(0);
   transition: all 400ms ease-in-out;
-  /*z-index: 99;*/
+  z-index: 99;
+}
+
+.hide_nav {
+  opacity: 0;
+  transform: translateY(-100%);
 }
 
 .nav_bar span {

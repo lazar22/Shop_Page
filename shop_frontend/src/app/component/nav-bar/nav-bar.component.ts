@@ -1,8 +1,8 @@
-import {DOCUMENT} from '@angular/common';
-import {Component, Inject, OnInit} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Component, HostListener, Inject, OnInit} from '@angular/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {CartService} from '../../services/cart.service';
+import {DOCUMENT, NgClass, NgIf} from '@angular/common';
+import {RouterLink} from "@angular/router";
 
 
 export type Theme = 'light_mode' | 'dark_mode';
@@ -12,14 +12,18 @@ export type Theme = 'light_mode' | 'dark_mode';
   standalone: true,
   imports: [
     RouterLink,
-    HttpClientModule  // <-- Add this here
+    HttpClientModule,
+    NgIf,
+    NgClass
   ],
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css']  // fix typo here: styleUrls (plural)
+  styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
   theme: Theme = 'dark_mode';
   amount_of_items: number = 0;
+  isVisible: boolean = false;
+
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -29,13 +33,25 @@ export class NavBarComponent {
   }
 
   ngOnInit() {
-    // Subscribe to changes in item count
     this.cartService.itemCount$.subscribe(count => {
       this.amount_of_items = count;
     });
 
-    // Initial fetch from backend
     this.cartService.refreshItemCount(this.http);
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scroll_top =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+
+    const doc_height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scroll_percent = (scroll_top / doc_height) * 100;
+
+    this.isVisible = scroll_percent >= 60;
   }
 
   mode_change() {
@@ -47,4 +63,5 @@ export class NavBarComponent {
 
     this.theme = newTheme;
   }
+
 }

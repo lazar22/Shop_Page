@@ -51,7 +51,7 @@ export class NavBarComponent {
     const doc_height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scroll_percent = (scroll_top / doc_height) * 100;
 
-    this.isVisible = scroll_percent >= 60;
+    this.isVisible = scroll_percent <= 60;
   }
 
   mode_change() {

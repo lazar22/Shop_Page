@@ -1,8 +1,8 @@
-import {Component, Input} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {CartService} from '../../services/cart.service';
 import {HttpClientModule} from '@angular/common/http';
 import {NgOptimizedImage} from "@angular/common";
-import {CartService} from '../../services/cart.service';  // adjust import
+import {HttpClient} from '@angular/common/http';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-item',

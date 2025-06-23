@@ -31,6 +31,11 @@ interface Item {
 export class cart_page {
   cartItems: { item: Item, amount: number }[] = [];
 
+  subtotal!: number;
+  shipping_cost: number = 50;
+  tax: number = 450;
+  order_total!: number;
+
   constructor(private http: HttpClient) {
   }
 
@@ -44,5 +49,10 @@ export class cart_page {
         });
       });
     });
+
+    this.http.get<{ total: number }>('http://localhost:4000/cart/get_total_price').subscribe(total => {
+      this.subtotal = total.total;
+      this.order_total = (this.subtotal + this.tax + this.shipping_cost);
+    })
   }
 }

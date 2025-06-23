@@ -1,10 +1,39 @@
-<div class="holder">
-  <app-cart-item
-    *ngFor="let cartItem of cartItems"
-    [title]="cartItem.item.title"
-    [description]="cartItem.item.description"
-    [picture]="cartItem.item.picture"
-    [amount]="cartItem.amount"
-    [stock]="cartItem.item.stock"
-  ></app-cart-item>
+<div class="cart">
+  <div class="holder">
+    <app-cart-item
+      *ngFor="let cartItem of cartItems"
+      [title]="cartItem.item.title"
+      [description]="cartItem.item.description"
+      [picture]="cartItem.item.picture"
+      [amount]="cartItem.amount"
+      [stock]="cartItem.item.stock"
+    ></app-cart-item>
+  </div>
+
+  <div class="price">
+    <h3 class="title">Order Summary</h3>
+    <div class="show_price_tag">
+      <span> Subtotal </span>
+      <span> {{ subtotal }} </span>
+    </div>
+
+    <div class="show_price_tag">
+      <span> Shipping estimate </span>
+      <span> {{ shipping_cost }} </span>
+    </div>
+
+    <div class="show_price_tag">
+      <span> Tax estimate </span>
+      <span> {{ tax }} </span>
+    </div>
+
+    <div class="show_price_tag">
+      <span> Order Total </span>
+      <span> {{ order_total }} </span>
+    </div>
+
+    <div class="checkout">
+      <span>CHECKOUT</span>
+    </div>
+  </div>
 </div>

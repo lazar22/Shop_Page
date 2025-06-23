@@ -16,17 +16,15 @@ struct CORS
         res.add_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         res.add_header("Access-Control-Allow-Headers", "Content-Type");
 
-        // Handle preflight (OPTIONS) request
         if (req.method == crow::HTTPMethod::Options)
         {
-            res.code = 204; // No Content
+            res.code = 204;
             res.end();
         }
     }
 
     void after_handle(crow::request&, crow::response& res, context&)
     {
-        // Make sure CORS headers are always in the final response
         res.add_header("Access-Control-Allow-Origin", "*");
         res.add_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         res.add_header("Access-Control-Allow-Headers", "Content-Type");
@@ -71,6 +69,18 @@ int main()
     {
         crow::json::wvalue response_body;
         response_body["count"] = cart.get_item_count();
+
+        crow::response res{200};
+        res.set_header("Content-Type", "application/json");
+        res.write(response_body.dump());
+
+        return res;
+    });
+
+    CROW_ROUTE(app, "/cart/get_total_price").methods("GET"_method)([&cart]()
+    {
+        crow::json::wvalue response_body;
+        response_body["total"] = cart.get_total_price();
 
         crow::response res{200};
         res.set_header("Content-Type", "application/json");

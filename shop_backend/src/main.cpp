@@ -112,7 +112,6 @@ int main()
         return res;
     });
 
-
     CROW_ROUTE(app, "/cart/get_items").methods("GET"_method)([&cart]()
     {
         crow::json::wvalue response_body = crow::json::wvalue::list();

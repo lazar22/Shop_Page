@@ -12,9 +12,9 @@ class ICart
 public:
     virtual ~ICart() = default;
 
-    virtual void add_item(const int item_id, const int price, const int quantity = 1) = 0;
+    virtual void add_item(int item_id, int price, int quantity) = 0;
 
-    virtual void remove_item(const int item_id) = 0;
+    virtual void remove_item(int item_id, int price, int quantity) = 0;
 
     [[nodiscard]] virtual int get_total_price() const = 0;
 

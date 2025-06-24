@@ -17,11 +17,11 @@ public:
         total_price += (price * quantity);
     }
 
-    void remove_item(const int item_id) override
+    void remove_item(const int item_id, const int price, const int quantity = 1) override
     {
         if (items.count(item_id))
         {
-            total_price -= items[item_id];
+            total_price -= price * quantity;
             items.erase(item_id);
         }
     }

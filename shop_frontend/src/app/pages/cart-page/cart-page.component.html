@@ -2,11 +2,14 @@
   <div class="holder">
     <app-cart-item
       *ngFor="let cartItem of cartItems"
+      [id]="cartItem.item.id"
       [title]="cartItem.item.title"
       [description]="cartItem.item.description"
+      [price]="cartItem.item.price"
       [picture]="cartItem.item.picture"
       [amount]="cartItem.amount"
       [stock]="cartItem.item.stock"
+      (removed)="onItemRemoved(cartItem.item.id)"
     ></app-cart-item>
   </div>
 

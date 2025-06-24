@@ -50,9 +50,18 @@ export class cart_page {
       });
     });
 
+    this.get_total_price();
+  }
+
+  get_total_price(): void {
     this.http.get<{ total: number }>('http://localhost:4000/cart/get_total_price').subscribe(total => {
       this.subtotal = total.total;
       this.order_total = (this.subtotal + this.tax + this.shipping_cost);
     })
+  }
+
+  onItemRemoved(removedId: number) {
+    this.cartItems = this.cartItems.filter(item => item.item.id !== removedId);
+    this.get_total_price();
   }
 }

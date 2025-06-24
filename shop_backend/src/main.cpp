@@ -89,6 +89,30 @@ int main()
         return res;
     });
 
+    CROW_ROUTE(app, "/cart/remove_item").methods(crow::HTTPMethod::Post)([&cart](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body || !body.has("item_id"))
+        {
+            return crow::response(400, "Invalid or missing item_id");
+        }
+
+        const int item_id = body["item_id"].i();
+        const int item_quantity = body["quantity"].i();
+        const int item_price = body["price"].i();
+
+        cart.remove_item(item_id, item_price, item_quantity);
+
+        crow::json::wvalue response_body;
+        response_body["message"] = "Item removed!";
+
+        crow::response res{200};
+        res.set_header("Content-Type", "application/json");
+        res.write(response_body.dump());
+        return res;
+    });
+
+
     CROW_ROUTE(app, "/cart/get_items").methods("GET"_method)([&cart]()
     {
         crow::json::wvalue response_body = crow::json::wvalue::list();

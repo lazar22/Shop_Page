@@ -11,7 +11,6 @@ export class CartService {
     this.itemCount.next(count);
   }
 
-  // Optionally, fetch from backend
   refreshItemCount(http: HttpClient) {
     http.get<{ count: number }>('http://localhost:4000/cart/get_item_count').subscribe({
       next: res => this.setItemCount(res.count),

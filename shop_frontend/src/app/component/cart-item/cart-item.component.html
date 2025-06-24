@@ -9,7 +9,7 @@
       <option *ngFor="let opt of amountOptions" [value]="opt">{{ opt }}</option>
     </select>
 
-    <div class="remove_item">
+    <div class="remove_item" (click)="remove_item()">
       <span>Remove</span>
     </div>
   </div>

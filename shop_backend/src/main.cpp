@@ -5,6 +5,10 @@
 #define CROW_USE_STANDALONE_ASIO
 #include "crow.h"
 
+#ifndef ENV_PATH
+#error "ENV_PATH is not defined. Make sure it's passed via CMake."
+#endif
+
 struct CORS
 {
     struct context
@@ -35,6 +39,7 @@ struct CORS
 int main()
 {
     crow::App<CORS> app;
+    CryptoUtil::init(ENV_PATH);
 
     Cart cart;
     Profile profile;

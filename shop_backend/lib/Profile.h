@@ -7,6 +7,7 @@
 
 #include "IProfile.h"
 #include "json.hpp"
+#include "crypto_util.h"
 
 #include <filesystem>
 #include <iostream>
@@ -62,7 +63,6 @@ public:
         }
         ifs.close();
 
-        // Ensure users key exists and is an array
         if (!_json.contains("users") || !_json["users"].is_array())
         {
             _json["users"] = nlohmann::json::array();
@@ -74,30 +74,37 @@ public:
             status = false;
         }
 
-        int new_id = get_last_id(_json) + 1;
-        nlohmann::json new_user = {
-            {"id", new_id},
-            {"username", _name},
-            {"lastname", _lastname},
-            {"email", _email},
-            {"password", _password}
-        };
-
-        _json["users"].push_back(new_user);
-
-        // Open file for writing
-        std::ofstream ofs(filename);
-        if (!ofs.is_open())
+        if (status)
         {
-            std::cerr << "Failed to open " << filename << " for writing\n";
-            status = false;
+            std::string encrypted_email = CryptoUtil::encrypt(_email);
+            std::string encrypted_password = CryptoUtil::encrypt(_password);
+
+            int new_id = get_last_id(_json) + 1;
+
+            nlohmann::json new_user = {
+                {"id", new_id},
+                {"username", _name},
+                {"lastname", _lastname},
+                {"email", encrypted_email},
+                {"password", encrypted_password}
+            };
+
+            _json["users"].push_back(new_user);
+
+            std::ofstream ofs(filename);
+            if (!ofs.is_open())
+            {
+                std::cerr << "Failed to open " << filename << " for writing\n";
+                status = false;
+            }
+
+            ofs << _json.dump(4);
+            ofs.flush();
+            ofs.close();
+
+            std::cout << "Registered new user.\n" << std::endl;
         }
 
-        ofs << _json.dump(4);
-        ofs.flush();
-        ofs.close();
-
-        std::cout << "Registered new user.\n" << std::endl;
         return status;
     }
 
@@ -111,7 +118,10 @@ public:
 
         for (const auto& user : _json["users"])
         {
-            if (user["email"] == _email && user["password"] == _password)
+            const std::string decrypted_email = CryptoUtil::decrypt(user["email"]);
+            const std::string decrypted_password = CryptoUtil::decrypt(user["password"]);
+
+            if (decrypted_email == _email && decrypted_password == _password)
             {
                 return true;
             }
@@ -147,7 +157,12 @@ protected:
     {
         for (const auto& user : _json["users"])
         {
-            if (_email == user["email"].get<std::string>())
+            const std::string decrypted_email = CryptoUtil::decrypt(user["email"]);
+
+            std::cout << "Decrypted stored email: " << decrypted_email << std::endl;
+            std::cout << "Input email: " << _email << std::endl;
+
+            if (_email == decrypted_email)
             {
                 return false;
             }

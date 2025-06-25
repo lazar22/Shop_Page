@@ -209,6 +209,9 @@ SHOP_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 SHOP_SOURCE_DIR:STATIC=C:/Users/Lazar/OneDrive/Desktop/Shop_Page/shop_backend
 
+//The directory containing a CMake configuration file for asio.
+asio_DIR:PATH=asio_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

@@ -25,7 +25,6 @@ export class RegisterComponent {
   }
 
   try_to_register() {
-
     if (this.c_password.length > 8 && this.c_password == this.password && this.validate_email(this.email)) {
       const payload = {
         name: this.name,
@@ -33,7 +32,7 @@ export class RegisterComponent {
         email: this.email,
         password: this.password,
       }
-      
+
       this.authService.register(payload).subscribe({
         next: (res) => console.log(res.message),
         error: (err) => console.error(err.message),

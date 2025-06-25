@@ -25,7 +25,7 @@ export class RegisterComponent {
   }
 
   try_to_register() {
-    if (this.c_password.length > 8 && this.c_password == this.password && this.validate_email(this.email)) {
+    if (this.c_password.length > 8 && this.c_password == this.password && this.authService.validate_email(this.email)) {
       const payload = {
         name: this.name,
         lastname: this.lastname,
@@ -42,12 +42,4 @@ export class RegisterComponent {
     }
 
   }
-
-  validate_email(_email: string) {
-    return String(_email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 }

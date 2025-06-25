@@ -1,0 +1,36 @@
+.profile {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  width: 15vw;
+  height: 10vh;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  border-radius: 1rem;
+
+  font-size: 2rem;
+
+  box-shadow: .3rem .3rem .5rem var(--secondary-color);
+
+  background-color: var(--primary-color);
+  color: var(--txt-base-color);
+
+  transition: all 500ms ease-in-out;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}

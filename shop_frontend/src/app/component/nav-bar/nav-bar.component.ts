@@ -1,9 +1,10 @@
-import {Component, HostListener, Inject, OnInit} from '@angular/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {Component, HostListener, Inject, OnInit} from '@angular/core';
+import {AuthService} from "../../services/auth.service";
 import {CartService} from '../../services/cart.service';
 import {DOCUMENT, NgClass, NgIf} from '@angular/common';
 import {RouterLink} from "@angular/router";
-
+import {Router} from '@angular/router';
 
 export type Theme = 'light_mode' | 'dark_mode';
 
@@ -11,10 +12,10 @@ export type Theme = 'light_mode' | 'dark_mode';
   selector: 'app-nav-bar',
   standalone: true,
   imports: [
-    RouterLink,
     HttpClientModule,
-    NgIf,
-    NgClass
+    RouterLink,
+    NgClass,
+    NgIf
   ],
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
@@ -27,8 +28,10 @@ export class NavBarComponent {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
+    private authService: AuthService,
     private cartService: CartService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {
   }
 
@@ -64,4 +67,11 @@ export class NavBarComponent {
     this.theme = newTheme;
   }
 
+  handle_profile_click() {
+    if (this.authService.is_logged_in()) {
+      this.router.navigate(['/profile']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
 }

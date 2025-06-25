@@ -1,8 +1,8 @@
 <div class="login_page">
   <div class="holder">
     <h3>Login</h3>
-    <input type="text" placeholder="email">
-    <input type="password" placeholder="password">
+    <input [(ngModel)]="email" type="text" placeholder="email">
+    <input [(ngModel)]="password" type="password" placeholder="password">
     <div class="settings">
       <label>
         <input type="checkbox">
@@ -10,7 +10,7 @@
       </label>
       <a> Forgot password?</a>
     </div>
-    <div class="login_btn">
+    <div class="login_btn" (click)="login()">
       <span> Login </span>
     </div>
     <div class="links">

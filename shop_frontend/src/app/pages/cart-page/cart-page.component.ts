@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
 import {CartItemComponent} from '../../component/cart-item/cart-item.component'
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {NgForOf} from "@angular/common";
 
@@ -40,7 +40,7 @@ export class cart_page {
   }
 
   ngOnInit(): void {
-    this.http.get<CartItem[]>('http://localhost:4000/cart/get_items').subscribe(cart => {
+    this.http.get<CartItem[]>(`http://localhost:4000/cart/get_items`).subscribe(cart => {
       this.http.get<Item[]>('assets/items.json').subscribe(allItems => {
         this.cartItems = cart.map(ci => {
           const item = allItems.find(i => i.id === ci.id);

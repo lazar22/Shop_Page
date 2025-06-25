@@ -5,20 +5,28 @@
 #ifndef PROFILE_H
 #define PROFILE_H
 
+#define JSON_NOEXCEPTION
+
 #include "IProfile.h"
 #include "json.hpp"
 #include "crypto_util.h"
 
+#include <jwt-cpp/jwt.h>
 #include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <chrono>
 
 static const std::string folder = "../private/";
 static const std::string filename = folder + "users.json";
 
+static const std::string jwt_secret = "verylongandsecuredseecret";
+
 class Profile final : public IProfile
 {
+    std::unordered_map<std::string, bool> login_states;
+
 public:
     Profile()
     {
@@ -36,6 +44,51 @@ public:
             ofs << _json.dump(4);
             ofs.close();
             std::cout << "Created new users.json file.\n" << std::endl;
+        }
+    }
+
+    std::string generate_token(const std::string& _email) override
+    {
+        auto _token = jwt::create()
+                      .set_issuer("Shop_Page")
+                      .set_type("JWT")
+                      .set_payload_claim("email", jwt::claim(_email))
+                      .set_issued_at(std::chrono::system_clock::now())
+                      .set_expires_at(std::chrono::system_clock::now() + std::chrono::hours(24))
+                      .sign(jwt::algorithm::hs256{jwt_secret});
+
+        return _token;
+    }
+
+    bool verify_token(const std::string& _token) override
+    {
+        try
+        {
+            const auto decoded = jwt::decode(_token);
+            const auto verifier = jwt::verify()
+                                  .allow_algorithm(jwt::algorithm::hs256{jwt_secret})
+                                  .with_issuer("Shop_Page");
+
+            verifier.verify(decoded);
+            return true;
+        }
+        catch (std::exception& e)
+        {
+            std::cerr << "Token verification  failed: " << e.what() << std::endl;
+            return false;
+        }
+    }
+
+    std::string get_email_from_token(const std::string& _token) override
+    {
+        try
+        {
+            auto decoded = jwt::decode(_token);
+            return decoded.get_payload_claim("email").as_string();
+        }
+        catch (...)
+        {
+            return "";
         }
     }
 
@@ -103,40 +156,73 @@ public:
             ofs.close();
 
             std::cout << "Registered new user.\n" << std::endl;
+            std::string token = generate_token(_email);
+
+            profile_login(_email, _password);
         }
 
         return status;
     }
 
-    bool profile_login(const std::string _email, const std::string _password) override
+    std::string profile_login(const std::string _email, const std::string _password) override
     {
+        std::string token{""};
         std::ifstream ifs(filename);
-        nlohmann::json _json;
+        if (!ifs.is_open())
+        {
+            std::cerr << "Failed to open users file\n";
+            return token;
+        }
 
-        ifs >> _json;
-        ifs.close();
+        nlohmann::json _json;
+        try
+        {
+            ifs >> _json;
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "JSON parse error: " << e.what() << "\n";
+            return token;
+        }
 
         for (const auto& user : _json["users"])
         {
-            const std::string decrypted_email = CryptoUtil::decrypt(user["email"]);
-            const std::string decrypted_password = CryptoUtil::decrypt(user["password"]);
-
-            if (decrypted_email == _email && decrypted_password == _password)
+            try
             {
-                return true;
+                const std::string decrypted_email = CryptoUtil::decrypt(user["email"].get<std::string>());
+                const std::string decrypted_password = CryptoUtil::decrypt(user["password"].get<std::string>());
+
+                if (decrypted_email == _email && decrypted_password == _password)
+                {
+                    login_states[_email] = true;
+                    token = generate_token(_email);
+                    break;
+                }
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "Error decrypting user data: " << e.what() << std::endl;
+                continue;
             }
         }
-        return false;
+
+        if (token.empty())
+        {
+            std::cerr << "Login failed for user: " << _email << std::endl;
+        }
+
+        return token;
     }
 
-    bool profile_logout() override
-    {
-        return true;
-    }
 
     bool profile_delete(std::string _email, std::string _password) override
     {
         return true;
+    }
+
+    bool profile_state(const std::string& _token) override
+    {
+        return verify_token(_token);
     }
 
 protected:
@@ -158,9 +244,6 @@ protected:
         for (const auto& user : _json["users"])
         {
             const std::string decrypted_email = CryptoUtil::decrypt(user["email"]);
-
-            std::cout << "Decrypted stored email: " << decrypted_email << std::endl;
-            std::cout << "Input email: " << _email << std::endl;
 
             if (_email == decrypted_email)
             {

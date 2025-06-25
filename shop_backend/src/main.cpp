@@ -169,5 +169,31 @@ int main()
         return res;
     });
 
+    CROW_ROUTE(app, "/auth/login").methods(crow::HTTPMethod::Post)([&profile](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+        {
+            return crow::response(400, "Invalid JSON");
+        }
+
+        std::string email = body["email"].s();
+        std::string password = body["password"].s();
+
+        std::string token = profile.profile_login(email, password);
+        if (token.empty())
+        {
+            return crow::response(401, "Invalid credentials");
+        }
+
+        crow::json::wvalue response;
+        response["token"] = token;
+        response["email"] = email;
+
+        crow::response res{200, response};
+        res.set_header("Content-Type", "application/json");
+        return res;
+    });
+
     app.port(4000).multithreaded().run();
 }

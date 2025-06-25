@@ -2,6 +2,7 @@
 /.angular
 /node_modules
 /build
+/private/*.json
 
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 

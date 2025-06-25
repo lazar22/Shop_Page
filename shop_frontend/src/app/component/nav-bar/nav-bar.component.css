@@ -65,6 +65,12 @@
   background-size: contain;
 }
 
+.icons .profile {
+  height: 100%;
+  background: url("/icons/profile.png") no-repeat center;
+  background-size: contain;
+}
+
 .icons .cart .amount {
   position: absolute;
   display: flex;

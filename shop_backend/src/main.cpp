@@ -1,4 +1,5 @@
 #include "Cart.h"
+#include "Profile.h"
 
 #define CROW_MAIN
 #define CROW_USE_STANDALONE_ASIO
@@ -34,8 +35,11 @@ struct CORS
 int main()
 {
     crow::App<CORS> app;
-    Cart cart;
 
+    Cart cart;
+    Profile profile;
+
+    // Cart Routs
     CROW_ROUTE(app, "/cart/add").methods(crow::HTTPMethod::Post)([&cart](const crow::request& req)
     {
         auto body = crow::json::load(req.body);
@@ -129,6 +133,34 @@ int main()
         res.set_header("Content-Type", "application/json");
         res.write(response_body.dump());
 
+        return res;
+    });
+
+    // Profile Routs
+    CROW_ROUTE(app, "/auth/register").methods(crow::HTTPMethod::Post)([&profile](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body)
+        {
+            return crow::response(400, "Invalid JSON");
+        }
+
+        const auto& user_obj = body;
+
+        std::string name = user_obj["name"].s();
+        std::string lastname = user_obj["lastname"].s();
+        std::string email = user_obj["email"].s();
+        std::string password = user_obj["password"].s();
+
+        bool success = profile.profile_register(name, email, password, lastname);
+
+        crow::json::wvalue response_body;
+        response_body["success"] = success;
+        response_body["message"] = success ? "Registered!" : "User already exists!";
+
+        crow::response res{success ? 200 : 409};
+        res.set_header("Content-Type", "application/json");
+        res.write(response_body.dump());
         return res;
     });
 

@@ -1,0 +1,26 @@
+<div class="register_page">
+  <div class="holder">
+    <h3>Register</h3>
+
+    <div class="top">
+      <input [(ngModel)]="name" type="text" placeholder="name">
+      <input [(ngModel)]="lastname" type="text" placeholder="lastname">
+    </div>
+
+    <input [(ngModel)]="email" type="text" placeholder="email">
+    <input [(ngModel)]="password" type="password" placeholder="password">
+    <input [(ngModel)]="c_password" type="password" placeholder="confirm password">
+
+    <label>
+      <input id="policy" type="checkbox">
+      Accept our terms and privacy policy
+    </label>
+
+    <div class="register_btn" (click)="try_to_register()">
+      <span> Sign Up </span>
+    </div>
+    <div class="links">
+      <a routerLink="/login">Login</a>
+    </div>
+  </div>
+</div>

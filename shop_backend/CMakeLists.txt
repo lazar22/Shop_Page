@@ -10,6 +10,7 @@ find_package(asio CONFIG REQUIRED)
 add_executable(shop
         src/main.cpp
         lib/Cart.h
+        lib/Profile.h
         src/win_accept_ex_loader.cpp)
 
 target_link_libraries(shop PRIVATE

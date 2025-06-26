@@ -8,6 +8,8 @@
 #define JSON_NOEXCEPTION
 
 #include "IProfile.h"
+#include "IWishlist.h"
+
 #include "json.hpp"
 #include "crypto_util.h"
 
@@ -23,14 +25,14 @@ static const std::string filename = folder + "users.json";
 
 static const std::string jwt_secret = "verylongandsecuredseecret";
 
-class Profile final : public IProfile
+class Profile final : public IProfile, public IWishlist
 {
     std::unordered_map<std::string, bool> login_states;
+    std::unordered_map<std::string, std::vector<int>> wishlists;
 
 public:
     Profile()
     {
-        std::cout << "Looking for users.json at: " << std::filesystem::absolute(filename) << std::endl;
         if (!std::filesystem::exists(folder))
         {
             std::filesystem::create_directories(folder);
@@ -45,8 +47,11 @@ public:
             ofs.close();
             std::cout << "Created new users.json file.\n" << std::endl;
         }
+
+        load_wishlists();
     }
 
+    // Token Handler
     std::string generate_token(const std::string& _email) override
     {
         auto _token = jwt::create()
@@ -92,6 +97,7 @@ public:
         }
     }
 
+    // Profile Handler
     bool profile_register(const std::string _name, const std::string _email,
                           const std::string _password, const std::string _lastname) override
     {
@@ -225,6 +231,84 @@ public:
         return verify_token(_token);
     }
 
+    void add_to_wishlist(const std::string& _email, const int item_id) override
+    {
+        if (!login_states[_email])
+        {
+            std::cerr << "User not logged in: " << _email << std::endl;
+            return;
+        }
+
+        auto& wishlist = wishlists[_email];
+        if (std::find(wishlist.begin(), wishlist.end(), item_id) == wishlist.end())
+        {
+            wishlist.push_back(item_id);
+            std::cout << "Added item " << item_id << " to in-memory wishlist" << std::endl;
+            save_wishlist(_email);
+        }
+        else
+        {
+            std::cout << "Item already in wishlist" << std::endl;
+        }
+    }
+
+    void remove_from_wishlist(const std::string& _email, const int item_id) override
+    {
+        std::cout << "Passed email: " << _email << std::endl;
+        if (!login_states[_email])
+        {
+            std::cerr << "User not logged in: " << _email << std::endl;
+            return;
+        }
+
+        std::string lookup_email;
+
+        std::string decrypted_email = CryptoUtil::decrypt(_email);
+        std::cout << "Decrypted email: " << _email << std::endl;
+        for (const auto& [encrypted_email, _] : wishlists)
+        {
+            std::cout << "Encrypted Email: " << encrypted_email << "Decrypted Email" << decrypted_email <<
+                std::endl;
+            if (encrypted_email == _email)
+            {
+                std::cout << "Mach found!" << std::endl;
+                lookup_email = encrypted_email;
+                break;
+            }
+        }
+
+
+        if (lookup_email.empty())
+        {
+            std::cerr << "Email not found in wishlists" << std::endl;
+            return;
+        }
+
+        auto& wishlist = wishlists[lookup_email];
+        wishlist.erase(std::remove(wishlist.begin(), wishlist.end(), item_id), wishlist.end());
+        save_wishlist(lookup_email);
+    }
+
+    std::vector<int> get_wishlist(const std::string& email) const override
+    {
+        auto it = wishlists.find(email);
+        if (it != wishlists.end())
+        {
+            return it->second;
+        }
+        return {};
+    }
+
+    bool is_in_wishlist(const std::string& email, int item_id) const override
+    {
+        auto it = wishlists.find(email);
+        if (it != wishlists.end())
+        {
+            return std::find(it->second.begin(), it->second.end(), item_id) != it->second.end();
+        }
+        return false;
+    }
+
 protected:
     static int get_last_id(const nlohmann::json& _json)
     {
@@ -251,6 +335,143 @@ protected:
             }
         }
         return true;
+    }
+
+    void save_wishlist(const std::string& _email)
+    {
+        nlohmann::json _json;
+        {
+            std::ifstream ifs(filename);
+            if (!ifs.is_open())
+            {
+                std::cerr << "Failed to open file for reading" << std::endl;
+                return;
+            }
+            try
+            {
+                ifs >> _json;
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "JSON parse error: " << e.what() << std::endl;
+                return;
+            }
+        }
+
+        bool user_found = false;
+        for (auto& user : _json["users"])
+        {
+            try
+            {
+                std::string decrypted_email = CryptoUtil::decrypt(user["email"].get<std::string>());
+                if (_email == decrypted_email)
+                {
+                    user["wishlist"] = nlohmann::json::array();
+                    for (int item_id : wishlists[_email])
+                    {
+                        user["wishlist"].push_back(item_id);
+                    }
+                    user_found = true;
+                    break;
+                }
+            }
+            catch (...)
+            {
+                continue;
+            }
+        }
+
+        if (!user_found)
+        {
+            std::cerr << "User not found in JSON file" << std::endl;
+            return;
+        }
+
+        std::string temp_file = filename + ".tmp";
+        {
+            std::ofstream ofs(temp_file);
+            if (!ofs.is_open())
+            {
+                std::cerr << "Failed to open temp file for writing" << std::endl;
+                return;
+            }
+            ofs << _json.dump(4);
+        }
+
+        try
+        {
+            if (std::filesystem::file_size(temp_file) > 0)
+            {
+                std::filesystem::rename(temp_file, filename);
+                std::cout << "Successfully saved wishlist to " << filename << std::endl;
+
+                std::cout << "Current wishlist contents:" << std::endl;
+                for (int item_id : wishlists[_email])
+                {
+                    std::cout << "- " << item_id << std::endl;
+                }
+            }
+            else
+            {
+                std::cerr << "Temp file is empty, aborting save" << std::endl;
+                std::filesystem::remove(temp_file);
+            }
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "File operation failed: " << e.what() << std::endl;
+            if (std::filesystem::exists(temp_file))
+            {
+                std::filesystem::remove(temp_file);
+            }
+        }
+    }
+
+    void load_wishlists()
+    {
+        std::cout << "\n=== Loading wishlists ===" << std::endl;
+
+        std::ifstream ifs(filename);
+        if (!ifs.is_open())
+        {
+            std::cerr << "Failed to open file: " << filename << std::endl;
+            return;
+        }
+
+        nlohmann::json _json;
+        try
+        {
+            ifs >> _json;
+            std::cout << "Found " << _json["users"].size() << " users" << std::endl;
+
+            for (const auto& user : _json["users"])
+            {
+                std::string email = CryptoUtil::decrypt(user["email"]);
+                std::cout << "User: " << email << std::endl;
+
+                if (user.contains("wishlist"))
+                {
+                    std::vector<int> wishlist;
+                    for (const auto& item : user["wishlist"])
+                    {
+                        wishlist.push_back(item.get<int>());
+                        std::cout << "  - Item: " << item << std::endl;
+                    }
+                    wishlists[email] = wishlist;
+                }
+                else
+                {
+                    std::cout << "  No wishlist found" << std::endl;
+                }
+            }
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+
+        ifs.close();
+        std::cout << "=== Finished loading ===\n" << std::endl;
     }
 };
 

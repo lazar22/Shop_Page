@@ -35,6 +35,7 @@ export const routes: Routes = [
     path: "profile",
     component: ProfileComponent,
     title: "profile page",
+    data: {title: NAME}
   },
   {
     path: "**",

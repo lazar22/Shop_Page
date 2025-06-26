@@ -20,7 +20,8 @@ add_executable(shop
         lib/Profile.h
         src/win_accept_ex_loader.cpp
         lib/crypto_util.h
-        include/env_loader.h)
+        include/env_loader.h
+        include/IWishlist.h)
 
 target_link_libraries(shop PRIVATE
         asio::asio

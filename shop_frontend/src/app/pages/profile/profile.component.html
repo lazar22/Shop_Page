@@ -1,5 +1,22 @@
-<div class="profile">
-  <div class="btn" (click)="logout()">
-    <span> Logout </span>
+<div class="top">
+  <span routerLink="/">{{ title }}</span>
+  <span> Wishlist </span>
+</div>
+<div class="profile_holder">
+  <div class="left">
+    <ul>
+      <li>My orders</li>
+      <li>Wishlist</li>
+      <li>Friends</li>
+      <li>Reviews</li>
+      <li>Account settings</li>
+    </ul>
+    <div class="btn" (click)="logout()">
+      <span> Logout </span>
+    </div>
+  </div>
+
+  <div class="center">
+    <app-prev-buy></app-prev-buy>
   </div>
 </div>

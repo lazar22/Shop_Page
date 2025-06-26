@@ -11,6 +11,10 @@
     <span class="price"> {{ price }} kr </span>
   </div>
 
+  <div class="wishlist" (click)="toggle_wishlist()">
+    <div class="wishlist_icon" [class.wishlist_added]="is_in_wishlist"></div>
+  </div>
+
   <div class="buy" (click)="add_item()">
     <div class="buy_icon"></div>
   </div>

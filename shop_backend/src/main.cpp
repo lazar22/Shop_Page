@@ -195,5 +195,57 @@ int main()
         return res;
     });
 
+    // Wishlist Routs
+    CROW_ROUTE(app, "/wishlist/add").methods(crow::HTTPMethod::Post)([&profile](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body || !body.has("email") || !body["item_id"])
+        {
+            return crow::response(400, "Invalid Request");
+        }
+
+        const std::string email = body["email"].s();
+        const int item_id = body["item_id"].i();
+
+        profile.add_to_wishlist(email, item_id);
+        return crow::response(200, "Item added to wishlist");
+    });
+
+    CROW_ROUTE(app, "/wishlist/remove").methods(crow::HTTPMethod::Post)([&profile](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body || !body.has("email") || !body["item_id"])
+        {
+            return crow::response(400, "Invalid Request");
+        }
+
+        const std::string email = body["email"].s();
+        const int item_id = body["item_id"].i();
+
+        profile.remove_from_wishlist(email, item_id);
+        return crow::response(200, "Item removed from wishlist");
+    });
+
+    CROW_ROUTE(app, "/wishlist/get").methods(crow::HTTPMethod::Post)([&profile](const crow::request& req)
+    {
+        auto body = crow::json::load(req.body);
+        if (!body || !body.has("email"))
+        {
+            return crow::response(400, "Invalid Request");
+        }
+
+        const std::string email = body["email"].s();
+        const auto wishlist = profile.get_wishlist(email);
+
+        crow::json::wvalue response;
+        response["wishlist"] = crow::json::wvalue::list();
+        for (size_t i = 0; i < wishlist.size(); i++)
+        {
+            response["wishlist"][i] = wishlist[i];
+        }
+
+        return crow::response(200, response);
+    });
+
     app.port(4000).multithreaded().run();
 }

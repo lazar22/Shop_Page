@@ -44,6 +44,15 @@ int main()
     Cart cart;
     Profile profile;
 
+    // Connection Check
+    CROW_ROUTE(app, "/health")([]()
+    {
+        crow::response res{200};
+        res.set_header("Content-Type", "text/plain");
+        res.write("OK");
+        return res;
+    });
+
     // Cart Routs
     CROW_ROUTE(app, "/cart/add").methods(crow::HTTPMethod::Post)([&cart](const crow::request& req)
     {

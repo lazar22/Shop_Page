@@ -13,7 +13,8 @@ import {ActivatedRoute} from "@angular/router";
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
-export class home_page {
+
+export class HomePageComponent {
   protected title = ' ';
 
   constructor(private route: ActivatedRoute) {
@@ -22,7 +23,4 @@ export class home_page {
   ngOnInit() {
     this.title = this.route.snapshot.data['title'];
   }
-}
-
-export class HomePageComponent {
 }
